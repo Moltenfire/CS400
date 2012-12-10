@@ -16,5 +16,8 @@
         <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q1" name="Prime_i" suffix="imp" user="Jonathan">
             <component name="Prime_i" type="implementation" />
         </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q3" name="Stats" suffix="mch" user="Jonathan">
+            <component name="Stats" type="specification" />
+        </component_file>
     </project>
 </db_xml>

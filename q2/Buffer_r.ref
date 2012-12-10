@@ -23,7 +23,7 @@ INITIALISATION
 OPERATIONS
     add(xx) = aa := 
     BEGIN
-        aa <+ {pos + length + 1 mod qlen -> xx} &
+        aa <+ {pos + length + 1 mod qlen |-> xx} &
         length := length + 1
     END;
     
