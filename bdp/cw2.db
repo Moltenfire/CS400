@@ -4,6 +4,12 @@
     <project decomp_dir="E:\Users\Jonathan\Documents\GitHub\CS400\bdp/expand_src" old_decomp_dir="E:\Users\Jonathan\Documents\GitHub\CS400\bdp/src">
         <!-- Definition directory list -->
         <!-- Component file list -->
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q2" name="Buffer" suffix="mch" user="Jonathan">
+            <component name="Buffer" type="specification" />
+        </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q2" name="Buffer_r" suffix="ref" user="Jonathan">
+            <component name="Buffer_r" type="refinement" />
+        </component_file>
         <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q1" name="Prime" suffix="mch" user="Jonathan">
             <component name="Prime" type="specification" />
         </component_file>

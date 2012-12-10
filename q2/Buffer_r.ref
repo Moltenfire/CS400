@@ -1,0 +1,58 @@
+REFINEMENT
+    Buffer_r(qlen,ELEM)
+    
+REFINES
+    Buffer
+    
+VARIABLES
+    aa, length, pos
+    
+INVARIANT
+    aa: 1..qlen --> ELEM &
+    length: NAT &
+    length <= qlen &
+    pos : NAT &
+    pos <= qlen &
+    buff = {xx,yy| xx: 0..length & yy = aa(xx + 1)}
+    
+INITIALISATION
+    aa:=  ||
+    length, pos := 0,0
+    
+    
+OPERATIONS
+    add(xx) = aa := 
+    BEGIN
+        aa <+ {pos + length + 1 mod qlen -> xx} &
+        length := length + 1
+    END;
+    
+    ee <-- remove =
+    BEGIN
+        length := length - 1 &
+        pos := pos + 1 mod qlen &
+        ee := aa(pos + 1)
+    END;
+    
+    rr < emptyquery =
+    IF
+        length = 0
+    THEN
+        rr := yes
+    ELSE
+        rr := no
+    END;
+    
+     rr < fullquery =
+    IF
+        length = qlen
+    THEN
+        rr := yes
+    ELSE
+        rr := no
+    END;
+    
+    oo <-- contentsquery = oo := length
+    
+END
+
