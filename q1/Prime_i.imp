@@ -10,12 +10,13 @@ OPERATIONS
     BEGIN
         /*  */
         VAR
-            xx, div
+            xx, div, maxval
         IN
         	xx:= 1;
         	div := 0;
+        	maxval := nn - 1;
         	WHILE
-            	xx /= (nn - 1) /\
+            	xx /= maxval &
             	nn mod xx = 0
        		DO
             	xx := xx + 1;
