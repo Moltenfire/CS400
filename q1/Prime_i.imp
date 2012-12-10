@@ -1,0 +1,28 @@
+IMPLEMENTATION
+    Prime_i
+    
+REFINES
+    Prime
+    
+OPERATIONS
+    
+    oo <-- isitprime(nn) =
+    BEGIN
+         /*  */
+        xx:= 1;
+        div := 0;       
+        WHILE
+            xx /= nn - 1
+        DO
+            xx := xx + 1;
+            div := div + nn mod xx
+        INVARIANT
+            div = SIGMA(yy).(yy: 1..xx | nn mod yy)
+        VARIANT
+            nn - xx
+        END
+        
+    END
+    
+
+END
