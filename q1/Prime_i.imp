@@ -12,7 +12,8 @@ OPERATIONS
         xx:= 1;
         div := 0;       
         WHILE
-            xx /= nn - 1
+            xx /= nn - 1 &
+            div = 0
         DO
             xx := xx + 1;
             div := div + nn mod xx

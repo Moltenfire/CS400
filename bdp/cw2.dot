@@ -1,6 +1,5 @@
 digraph {
-Buffer [ label=" Buffer " shape= box ]
-Buffer_r [ label=" Buffer_r " shape= boxshape= rhombcolor= pink ]
+Buffer_r [ label=" Buffer\nBuffer_r " shape= box ]
 Prime_i [ label=" Prime\nPrime_i " shape= box ]
 
 }
