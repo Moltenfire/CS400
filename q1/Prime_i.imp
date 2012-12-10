@@ -13,11 +13,11 @@ OPERATIONS
             xx, div, maxval
         IN
         	xx:= 1;
-        	div := 0;
+        	div := 1;
         	maxval := nn - 1;
         	WHILE
             	xx /= maxval &
-            	nn mod xx = 0
+            	xx = div
        		DO
             	xx := xx + 1;
             	div := div + nn mod xx
@@ -27,7 +27,7 @@ OPERATIONS
         	    nn - xx
         	END;
         	IF
-        	    div = 0
+        	    div = 1
         	THEN
         	    oo := TRUE
         	ELSE
