@@ -1,0 +1,41 @@
+IMPLEMENTATION
+    Prime_i
+
+REFINES
+    Prime
+
+OPERATIONS
+
+    oo <-- isitprime ( nn ) =
+    BEGIN
+        /*  */
+        VAR
+            xx , div , maxval
+        IN
+                xx := 1 ;
+                div := 1 ;
+                maxval := nn - 1 ;
+                WHILE
+                    xx /= maxval &
+                    xx = div
+                       DO
+                    xx := xx + 1 ;
+                    div := div + nn mod xx
+                INVARIANT
+                    div = SIGMA ( yy ) . ( yy : 1 .. xx | nn mod yy )
+                VARIANT
+                    nn - xx
+                END ;
+                IF
+                    div = 1
+                THEN
+                    oo := TRUE
+                ELSE
+                    oo := FALSE
+                END
+        END
+
+    END
+
+
+END
