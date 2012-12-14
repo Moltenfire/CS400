@@ -1,0 +1,24 @@
+THEORY ProofList IS
+  _f(4) & _f(5) & tested.2,(_f(6) => _f(8));
+  _f(4) & _f(5) & tested.1,(_f(6) => _f(7));
+  Initialisation.2,(_f(1) => _f(3));
+  Initialisation.1,(_f(1) => _f(2))
+END
+&
+THEORY Formulas IS
+  "`Check that the invariant (tally: 0..10 --> NAT) is established by the initialisation - ref 3.3'";
+  ((0..10)*{0}: 0..10 +-> NAT);
+  (dom((0..10)*{0}) = 0..10);
+  ("`Component invariant'" & tally: 0..10 +-> NAT & dom(tally) = 0..10);
+  ("`tested preconditions in this component'" & nn: INTEGER & 0<=nn & nn<=2147483647 & nn<=10);
+  "`Check that the invariant (tally: 0..10 --> NAT) is preserved by the operation - ref 3.4'";
+  (tally<+{nn|->tally(nn)+1}: 0..10 +-> NAT);
+  (dom(tally<+{nn|->tally(nn)+1}) = 0..10)
+END
+&
+THEORY EnumerateX 
+END
+&
+THEORY Version IS
+  POVersion(V3.8.3)(CLT == "V3.7.6")(genOPO == KO, genDivergencePO == KO, local_op == OK)
+END
