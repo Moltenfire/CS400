@@ -1,5 +1,5 @@
 MACHINE
-    Stats
+    Stats2
     
 VARIABLES
     tally
