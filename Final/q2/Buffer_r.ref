@@ -28,7 +28,7 @@ OPERATIONS
     add(xx) = BEGIN
         IF num > qlen
         THEN
-            aa := aa <+ {((pos + num - 1) mod qlen) + 1 |-> xx}; /* changed to override*/
+            aa := aa <+ {((pos + num - 1) mod qlen) + 1 |-> xx};
             num := num + 1
         END
     END;

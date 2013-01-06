@@ -14,7 +14,7 @@ OPERATIONS
             WHILE xx < nn & oo = TRUE
             DO
                 xx := xx + 1;
-                VAR rr IN /* Can move to first VAR*/
+                VAR rr IN
                     rr := nn mod xx;
                     /* Checks to see if then current number divides into nn */
                     IF rr = 0 THEN
