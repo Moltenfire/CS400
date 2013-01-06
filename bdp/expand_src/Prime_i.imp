@@ -5,37 +5,27 @@ REFINES
     Prime
 
 OPERATIONS
-
-    oo <-- isitprime ( nn ) =
-    BEGIN
-        /*  */
-        VAR
-            xx , div , maxval
-        IN
-                xx := 1 ;
-                div := 1 ;
-                maxval := nn - 1 ;
-                WHILE
-                    xx /= maxval &
-                    xx = div
-                       DO
-                    xx := xx + 1 ;
-                    div := div + nn mod xx
-                INVARIANT
-                    div = SIGMA ( yy ) . ( yy : 1 .. xx | nn mod yy )
-                VARIANT
-                    nn - xx
-                END ;
-                IF
-                    div = 1
-                THEN
-                    oo := TRUE
-                ELSE
-                    oo := FALSE
+    oo <-- isitprime ( nn ) = BEGIN
+        oo := TRUE ;
+        IF nn > 2 THEN
+        VAR xx IN
+            xx := 1 ;
+            WHILE xx < nn & oo = TRUE
+            DO
+                xx := xx + 1 ;
+                VAR rr IN
+                    rr := nn mod xx ;
+                    IF rr = 0 THEN
+                        oo := FALSE
+                    END
                 END
+            INVARIANT
+                xx : 1 .. nn
+                & oo = bool ( ! zz . ( zz : NAT => ( zz : 2 .. xx => nn mod zz /= 0 ) ) )
+            VARIANT
+                nn - xx
+            END
         END
-
+        END
     END
-
-
 END

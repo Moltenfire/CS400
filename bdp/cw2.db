@@ -10,6 +10,12 @@
         <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q2" name="Buffer_r" suffix="ref" user="Jonathan">
             <component name="Buffer_r" type="refinement" />
         </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400" name="Buffer_w" suffix="mch" user="Jonathan">
+            <component name="Buffer_w" type="specification" />
+        </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400" name="Buffer_w_r" suffix="ref" user="Jonathan">
+            <component name="Buffer_w_r" type="refinement" />
+        </component_file>
         <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q1" name="Prime" suffix="mch" user="Jonathan">
             <component name="Prime" type="specification" />
         </component_file>
@@ -18,6 +24,15 @@
         </component_file>
         <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400/q3" name="Stats" suffix="mch" user="Jonathan">
             <component name="Stats" type="specification" />
+        </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400" name="Stats2" suffix="mch" user="Jonathan">
+            <component name="Stats2" type="specification" />
+        </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400" name="Stats2_i" suffix="imp" user="Jonathan">
+            <component name="Stats2_i" type="implementation" />
+        </component_file>
+        <component_file path="E:/Users/Jonathan/Documents/GitHub/CS400" name="Stats_i" suffix="imp" user="Jonathan">
+            <component name="Stats_i" type="implementation" />
         </component_file>
     </project>
 </db_xml>

@@ -103,8 +103,8 @@ THEORY ListPreconditionX IS
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Implementation(Prime_i),isitprime)==(nn: NAT1 | @(xx,div,maxval).(xx:=1;div:=1;(nn-1: INT & nn: INT & 1: INT | maxval:=nn-1);WHILE xx/=maxval & xx = div DO (xx+1: INT & xx: INT & 1: INT | xx:=xx+1);(div+nn mod xx: INT & nn mod xx: NAT & nn: NAT & xx: NAT1 & div: INT & nn mod xx: INT | div:=div+nn mod xx) INVARIANT div = SIGMA(yy).(yy: 1..xx | nn mod yy) VARIANT nn-xx END;(div = 1 ==> oo:=TRUE [] not(div = 1) ==> oo:=FALSE)));
-  List_Substitution(Implementation(Prime_i),isitprime)==(VAR xx,div,maxval IN xx:=1;div:=1;maxval:=nn-1;WHILE xx/=maxval & xx = div DO xx:=xx+1;div:=div+nn mod xx INVARIANT div = SIGMA(yy).(yy: 1..xx | nn mod yy) VARIANT nn-xx END;IF div = 1 THEN oo:=TRUE ELSE oo:=FALSE END END)
+  Expanded_List_Substitution(Implementation(Prime_i),isitprime)==(nn: NAT1 | oo:=TRUE;(nn>2 ==> @xx.(xx:=1;WHILE xx<nn & oo = TRUE DO (xx+1: INT & xx: INT & 1: INT | xx:=xx+1);@rr.((nn mod xx: NAT & nn: NAT & xx: NAT1 | rr:=nn mod xx);(rr = 0 ==> oo:=FALSE [] not(rr = 0) ==> skip)) INVARIANT xx: 1..nn & oo = bool(!zz.(zz: NAT => (zz: 2..xx => nn mod zz/=0))) VARIANT nn-xx END) [] not(nn>2) ==> skip));
+  List_Substitution(Implementation(Prime_i),isitprime)==(oo:=TRUE;IF nn>2 THEN VAR xx IN xx:=1;WHILE xx<nn & oo = TRUE DO xx:=xx+1;VAR rr IN rr:=nn mod xx;IF rr = 0 THEN oo:=FALSE END END INVARIANT xx: 1..nn & oo = bool(!zz.(zz: NAT => (zz: 2..xx => nn mod zz/=0))) VARIANT nn-xx END END END)
 END
 &
 THEORY ListConstantsX IS
@@ -165,7 +165,8 @@ THEORY ListOfIdsX IS
 END
 &
 THEORY VariablesLocEnvX IS
-  Variables_Loc(Implementation(Prime_i),isitprime, 1) == (Type(xx) == Lvl(btype(INTEGER,?,?));Type(div) == Lvl(btype(INTEGER,?,?));Type(maxval) == Lvl(btype(INTEGER,?,?)))
+  Variables_Loc(Implementation(Prime_i),isitprime, 2) == (Type(rr) == Lvl(btype(INTEGER,?,?)));
+  Variables_Loc(Implementation(Prime_i),isitprime, 1) == (Type(xx) == Lvl(btype(INTEGER,?,?)))
 END
 &
 THEORY TCIntRdX IS

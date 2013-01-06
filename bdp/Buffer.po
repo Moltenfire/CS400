@@ -1,0 +1,33 @@
+THEORY ProofList IS
+  _f(1) & _f(6) & _f(12) & remove.2,(_f(10) => _f(14));
+  _f(1) & _f(6) & _f(12) & remove.1,(_f(8) => _f(13));
+  _f(1) & _f(6) & _f(7) & add.2,(_f(10) => _f(11));
+  _f(1) & _f(6) & _f(7) & add.1,(_f(8) => _f(9));
+  _f(1) & Initialisation.2,(_f(4) => _f(5));
+  _f(1) & Initialisation.1,(_f(2) => _f(3))
+END
+&
+THEORY Formulas IS
+  ("`Component constraints'" & qlen: INTEGER & 0<=qlen & qlen<=2147483647 & not(qlen = 0) & ELEM: FIN(INTEGER) & not(ELEM = {}) & "`Component properties'" & (1..2)*{RESP}: FIN(NATURAL*{RESP}) & not((1..2)*{RESP} = {}));
+  "`Check that the invariant (buff: seq(ELEM)) is established by the initialisation - ref 3.3'";
+  ({}: seq(ELEM));
+  "`Check that the invariant (size(buff)<=qlen) is established by the initialisation - ref 3.3'";
+  (size({})<=qlen);
+  ("`Component invariant'" & buff: seq(ELEM) & size(buff)<=qlen);
+  ("`add preconditions in this component'" & xx: ELEM & size(buff)+1<=qlen);
+  "`Check that the invariant (buff: seq(ELEM)) is preserved by the operation - ref 3.4'";
+  (buff<-xx: seq(ELEM));
+  "`Check that the invariant (size(buff)<=qlen) is preserved by the operation - ref 3.4'";
+  (size(buff<-xx)<=qlen);
+  ("`remove preconditions in this component'" & not(buff = {}));
+  (tail(buff): seq(ELEM));
+  (size(tail(buff))<=qlen)
+END
+&
+THEORY EnumerateX IS
+  RESP == {yes,no}
+END
+&
+THEORY Version IS
+  POVersion(V3.8.3)(CLT == "V3.7.6")(genOPO == KO, genDivergencePO == KO, local_op == OK)
+END

@@ -1,0 +1,31 @@
+IMPLEMENTATION
+    Prime_i2
+ 
+REFINES
+    Prime
+    
+OPERATIONS
+    oo <-- isitprime(nn) = BEGIN
+        oo := TRUE;
+        IF nn > 2 THEN
+        VAR xx IN
+            xx := 1;
+            WHILE xx < nn & oo = TRUE
+            DO
+                xx := xx + 1;
+                VAR rr IN
+                    rr := nn mod xx;
+                    IF rr = 0 THEN
+                        oo := FALSE
+                    END
+                END
+            INVARIANT
+                xx : 1..nn
+                & oo = bool(!zz.(zz : NAT => (zz : 2..xx => nn mod zz /= 0)))
+            VARIANT
+                nn - xx
+            END
+        END
+        END
+    END
+END

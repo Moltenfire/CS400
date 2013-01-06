@@ -1,0 +1,96 @@
+THEORY ProofList IS
+  _f(1) & _f(9) & fullquery.1,(_f(53) & _f(12) => _f(52));
+  _f(1) & _f(9) & emptyquery.2,(_f(51) & _f(12) => _f(52));
+  _f(1) & _f(9) & emptyquery.1,(_f(49) & _f(12) => _f(50));
+  _f(1) & _f(9) & wrap_remove.20,(_f(48) & _f(17) => _f(18));
+  _f(1) & _f(9) & wrap_remove.19,(_f(46) & _f(20) => _f(47));
+  _f(1) & _f(9) & wrap_remove.18,(_f(42) & _f(14) => _f(45));
+  _f(1) & _f(9) & wrap_remove.17,(_f(42) & _f(20) => _f(44));
+  _f(1) & _f(9) & wrap_remove.16,(_f(42) & _f(12) => _f(43));
+  _f(1) & _f(9) & wrap_remove.15,(_f(27) & _f(17) => _f(41));
+  _f(1) & _f(9) & wrap_remove.14,(_f(27) & _f(39) => _f(40));
+  _f(1) & _f(9) & wrap_remove.13,(_f(27) & _f(35) => _f(38));
+  _f(1) & _f(9) & wrap_remove.12,(_f(27) & _f(35) => _f(37));
+  _f(1) & _f(9) & wrap_remove.11,(_f(27) & _f(35) => _f(36));
+  _f(1) & _f(9) & wrap_remove.10,(_f(27) & _f(33) => _f(34));
+  _f(1) & _f(9) & wrap_remove.9,(_f(27) & _f(28) => _f(32));
+  _f(1) & _f(9) & wrap_remove.8,(_f(27) & _f(28) => _f(31));
+  _f(1) & _f(9) & wrap_remove.7,(_f(27) & _f(28) => _f(30));
+  _f(1) & _f(9) & wrap_remove.6,(_f(27) & _f(28) => _f(29));
+  _f(1) & _f(9) & wrap_remove.5,(_f(23) & _f(12) => _f(26));
+  _f(1) & _f(9) & wrap_remove.4,(_f(23) & _f(14) => _f(25));
+  _f(1) & _f(9) & wrap_remove.3,(_f(23) & _f(20) => _f(24));
+  _f(1) & _f(9) & wrap_remove.2,(_f(19) & _f(14) => _f(22));
+  _f(1) & _f(9) & wrap_remove.1,(_f(19) & _f(20) => _f(21));
+  _f(1) & _f(9) & _f(10) & wrap_add.3,(_f(16) & _f(17) => _f(18));
+  _f(1) & _f(9) & _f(10) & wrap_add.2,(_f(11) & _f(14) => _f(15));
+  _f(1) & _f(9) & _f(10) & wrap_add.1,(_f(11) & _f(12) => _f(13));
+  _f(1) & Initialisation.3,(_f(2) & _f(7) => _f(8));
+  _f(1) & Initialisation.2,(_f(2) & _f(5) => _f(6));
+  _f(1) & Initialisation.1,(_f(2) & _f(3) => _f(4))
+END
+&
+THEORY Formulas IS
+  ("`Component constraints'" & qlen: INTEGER & 0<=qlen & qlen<=2147483647 & not(qlen = 0) & ELEM: FIN(INTEGER) & not(ELEM = {}) & "`Previous components properties'" & (1..3)*{ERRORS}: FIN(NATURAL*{ERRORS}) & not((1..3)*{ERRORS} = {}) & (1..2)*{RESP}: FIN(NATURAL*{RESP}) & not((1..2)*{RESP} = {}));
+  ("`Local hypotheses'" & aa$0: 1..qlen +-> ELEM & dom(aa$0) = 1..qlen);
+  "`Check that the invariant (aa\|/pos-1^(aa/|\pos-1)/|\num = buff) is established by the initialisation - ref 4.3, 5.4'" & "`Check initialisation refinement - ref 4.3, 5.4'";
+  (aa$0\|/0^(aa$0/|\0)/|\0 = {});
+  "`Check that the invariant (pos<=qlen) is established by the initialisation - ref 4.3, 5.4'";
+  (1<=qlen);
+  "`Check that the invariant (num = size(buff)) is established by the initialisation - ref 4.3, 5.4'";
+  (0 = size(aa$0\|/0^(aa$0/|\0)/|\0));
+  ("`Previous components invariants'" & buff: seq(ELEM) & size(buff)<=qlen & "`Component invariant'" & aa$1: 1..qlen +-> ELEM & dom(aa$1) = 1..qlen & pos$1: INTEGER & 0<=pos$1 & pos$1<=2147483647 & not(pos$1 = 0) & pos$1<=qlen & num$1: INTEGER & 0<=num$1 & num$1<=2147483647 & num$1<=qlen & num$1 = size(buff) & aa$1\|/pos$1-1^(aa$1/|\pos$1-1)/|\num$1 = buff);
+  ("`wrap_add preconditions in previous components'" & xx: ELEM);
+  ("`wrap_add preconditions in this component'" & xx: ELEM & "`Local hypotheses'" & (size(buff)+1<=qlen => xx: ELEM & size(buff)+1<=qlen) & size(buff)+1<=qlen);
+  "`Check that the invariant (rr$1 = rr) is preserved by the operation - ref 4.4, 5.5'";
+  (2|->ERRORS = 1|->ERRORS);
+  "`Check that the invariant (aa\|/pos-1^(aa/|\pos-1)/|\num = buff) is preserved by the operation - ref 4.4, 5.5'";
+  (aa$1\|/pos$1-1^(aa$1/|\pos$1-1)/|\num$1 = buff<-xx);
+  ("`wrap_add preconditions in this component'" & xx: ELEM & "`Local hypotheses'" & (size(buff)+1<=qlen => xx: ELEM & size(buff)+1<=qlen));
+  "`Check that the invariant (num = size(buff)) is preserved by the operation - ref 4.4, 5.5'";
+  (num$1 = size(aa$1\|/pos$1-1^(aa$1/|\pos$1-1)/|\num$1));
+  ("`Local hypotheses'" & 1<=num$1 & (not(buff = {}) => not(buff = {})) & not(buff = {}));
+  "`Check that the invariant (ee$1 = ee) is preserved by the operation - ref 4.4, 5.5'";
+  (aa$1(pos$1) = first(buff));
+  (aa$1\|/pos$1 mod qlen+1-1^(aa$1/|\pos$1 mod qlen+1-1)/|\num$1-1 = tail(buff));
+  ("`Local hypotheses'" & 1<=num$1 & (not(buff = {}) => not(buff = {})) & buff = {});
+  (aa$1(pos$1) = ee);
+  (aa$1\|/pos$1 mod qlen+1-1^(aa$1/|\pos$1 mod qlen+1-1)/|\num$1-1 = buff);
+  (1|->ERRORS = 3|->ERRORS);
+  ("`Local hypotheses'" & 1<=num$1 & (not(buff = {}) => not(buff = {})));
+  "`Check that the invariant (pos: NAT1) is preserved by the operation - ref 4.4, 5.5'";
+  (pos$1 mod qlen+1: INTEGER);
+  (0<=pos$1 mod qlen+1);
+  (pos$1 mod qlen+1<=2147483647);
+  (not(pos$1 mod qlen+1 = 0));
+  "`Check that the invariant (pos<=qlen) is preserved by the operation - ref 4.4, 5.5'";
+  (pos$1 mod qlen+1<=qlen);
+  "`Check that the invariant (num: NAT) is preserved by the operation - ref 4.4, 5.5'";
+  (num$1-1: INTEGER);
+  (0<=num$1-1);
+  (num$1-1<=2147483647);
+  "`Check that the invariant (num<=qlen) is preserved by the operation - ref 4.4, 5.5'";
+  (num$1-1<=qlen);
+  (num$1-1 = size(aa$1\|/pos$1 mod qlen+1-1^(aa$1/|\pos$1 mod qlen+1-1)/|\num$1-1));
+  ("`Local hypotheses'" & not(1<=num$1) & (not(buff = {}) => not(buff = {})) & not(buff = {}));
+  (3|->ERRORS = 1|->ERRORS);
+  (ee$1 = first(buff));
+  (aa$1\|/pos$1-1^(aa$1/|\pos$1-1)/|\num$1 = tail(buff));
+  ("`Local hypotheses'" & not(1<=num$1) & (not(buff = {}) => not(buff = {})) & buff = {});
+  (ee$1 = ee);
+  ("`Local hypotheses'" & not(1<=num$1) & (not(buff = {}) => not(buff = {})));
+  ("`Local hypotheses'" & num$1 = 0 & not(buff = {}));
+  (1|->RESP = 2|->RESP);
+  ("`Local hypotheses'" & not(num$1 = 0) & buff = {});
+  (2|->RESP = 1|->RESP);
+  ("`Local hypotheses'" & not(num$1 = qlen) & size(buff) = qlen)
+END
+&
+THEORY EnumerateX IS
+  ERRORS == {ok,full,empty};
+  RESP == {yes,no}
+END
+&
+THEORY Version IS
+  POVersion(V3.8.3)(CLT == "V3.7.6")(genOPO == KO, genDivergencePO == KO, local_op == OK)
+END

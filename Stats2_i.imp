@@ -1,0 +1,87 @@
+IMPLEMENTATION
+    Stats2_i
+    
+REFINES
+    Stats2
+    
+IMPORTS
+    L_ARRAY1(NAT, 10)
+    
+INVARIANT
+    arr_vrb = tally
+    
+INITIALISATION
+    SET_ARRAY(0, 10, 0)
+    
+OPERATIONS
+    tested(nn) = BEGIN
+        VAR xx IN
+            xx <-- VAL_ARRAY(nn);
+            STR_ARRAY(nn, xx + 1)
+        END
+    END;
+    
+    oo <-- querytot = VAR ii, vv, count IN
+        count := 0;
+        ii := 0;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            count := count + vv
+        INVARIANT
+            ii : 0..10
+            & count = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        oo := count
+    END;
+ 
+    oo <-- queryreg(nn) = oo <-- VAL_ARRAY(nn);
+    
+    oo <-- querypc(nn) = VAR ii, vv, count IN
+        count := 0;
+        ii := 0;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            count := count + vv
+        INVARIANT
+            ii : 0..10
+            & count = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        vv <-- VAL_ARRAY(nn);
+        oo := (vv / count) * 100
+    END;
+    
+    oo <-- querymean = VAR ii, vv, count, total IN
+        count := 0;
+        total := 0;
+        ii := 0;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            total := total + (ii * vv);
+            count := count + vv
+        INVARIANT
+            ii : 0..10
+            & count = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+            & total = SIGMA(xx).(xx:0..ii | ii * arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        oo := total / count
+    END;
+    
+    oo <-- querymedian = oo := 0
+    
+    
+/*
+queryreg with output printed to screen too.
+The BASIC_IO library must be imported for this to work.
+ 
+oo <-- queryreg(nn) = BEGIN
+    oo VAL_ARRAY(nn);
+    INT_WRITE(oo)
+END
+*/
+END

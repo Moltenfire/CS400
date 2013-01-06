@@ -1,6 +1,8 @@
 digraph {
 Buffer_r [ label=" Buffer\nBuffer_r " shape= box ]
+Buffer_w_r [ label=" Buffer_w\nBuffer_w_r " shape= box ]
 Prime_i [ label=" Prime\nPrime_i " shape= box ]
-Stats [ label=" Stats " shape= box ]
+Stats2_i [ label=" Stats2\nStats2_i " shape= box ]
+Stats_i [ label=" Stats\nStats_i " shape= box ]
 
 }

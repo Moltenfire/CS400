@@ -1,0 +1,26 @@
+THEORY BalanceX IS
+  Buffer_w,0,0,0,0,0,0,0;
+  InstanciatedConstraintsLemmas,0,0,0,0,0,0,0;
+  Initialisation,0,0,0,0,0,0,0;
+  wrap_add,0,0,0,0,0,0,0;
+  wrap_remove,0,0,0,0,0,0,0;
+  emptyquery,0,0,0,0,0,0,0;
+  fullquery,0,0,0,0,0,0,0;
+  contentsquery,0,0,0,0,0,0,0
+END
+&
+THEORY ProofState
+END
+&
+THEORY MethodList
+END
+&
+THEORY PassList
+END
+&
+THEORY ManForms 
+END
+&
+THEORY Version IS
+  POVersion(V3.8.3)(CLT == "V3.7.6")(genOPO == KO, genDivergencePO == KO, local_op == OK)
+END

@@ -8,7 +8,6 @@ INVARIANT
     tally : 0..10 --> NAT
     
 INITIALISATION
-    /*tally := {xx,yy| xx: 0..10 & yy = 0}*/
     tally := (0..10) * {0}
     
 OPERATIONS
@@ -18,6 +17,7 @@ OPERATIONS
         nn: NAT &
         nn <= 10
     THEN
+        /* Adds one to the score */
         tally := tally <+ {nn |-> tally(nn) + 1}
     END;
     
@@ -47,9 +47,14 @@ OPERATIONS
         xx
     WHERE
         xx: dom(tally) & 
-        SIGMA(zz).(zz: (xx+1)..10 | tally(zz)) - SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) <= xx &
+        /* If the difference between scores lower than xx and scores higher than xx is between zero and the number of scores at xx then xx is the median. */
+        
+        /* Checks that lower scores - higher scores is within the range. */
+        SIGMA(zz).(zz: (xx+1)..10 | tally(zz)) - SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) <= tally(xx) &
         0 <= SIGMA(zz).(zz: (xx+1)..10 | tally(zz)) - SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) &
-        SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) - SIGMA(zz).(zz: (xx+1)..10 | tally(zz)) < xx &
+        
+        /* Checks that higher scores - lower scores is within the range. It has < rather than <= because we want the lower value if the total number of scores is even. */
+        SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) - SIGMA(zz).(zz: (xx+1)..10 | tally(zz)) < tally(xx) &
         0 <= SIGMA(zz).(zz: 0..(xx-1) | tally(zz)) - SIGMA(zz).(zz: (xx+1)..10 | tally(zz))
     THEN
         oo := xx
