@@ -1,0 +1,34 @@
+IMPLEMENTATION
+    Prime_i
+ 
+REFINES
+    Prime
+    
+OPERATIONS
+    oo <-- isitprime(nn) = BEGIN
+        oo := TRUE;
+        IF nn > 2 THEN
+        VAR xx IN
+            xx := 1;
+            /* Iterated through all numbers between 2 and nn, stops if it finds a number that divides into nn exactly */
+            WHILE xx < nn & oo = TRUE
+            DO
+                xx := xx + 1;
+                VAR rr IN /* Can move to first VAR*/
+                    rr := nn mod xx;
+                    /* Checks to see if then current number divides into nn */
+                    IF rr = 0 THEN
+                        oo := FALSE
+                    END
+                END
+            INVARIANT
+                xx : 1..nn
+                /* Same a specification except it only looks at numbers between 2 and xx */
+                & oo = bool(!(zz).(zz : NAT => (zz : 2..xx => nn mod zz /= 0)))
+            VARIANT
+                nn - xx
+            END
+        END
+        END
+    END
+END

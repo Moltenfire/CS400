@@ -1,0 +1,73 @@
+IMPLEMENTATION
+    Stats_i
+    
+REFINES
+    Stats
+    
+VALUES
+    total_students = 100
+    
+CONCRETE_VARIABLES
+    tt, ss
+    
+INITIALISATION
+    tt := 0..10 --> 0..total_students;
+    ss := 0..10 --> 0..total_students;
+    
+OPERATIONS
+    tested(nn) = 
+    BEGIN
+        tt := tt <+ {nn |-> tt(nn) + 1};
+        /* Each time a score is added all scores equal and higher get 1 added to them in the function ss. This keeps a running sum of the total number of scores. */
+        VAR xx, yy IN
+            xx := nn;
+            yy := ss;
+            WHILE xx < 10
+            DO
+                yy := yy <+ {xx |-> ss(xx) + 1};
+                xx := xx + 1;
+            INVARIANT
+                xx : 0..10 &
+                yy = {aa, bb| aa:0..nn-1 & bb = ss(aa)} \/ {aa, bb| aa:nn..xx & bb = ss(aa)} \/ {aa, bb| aa:xx+1..10 & bb = ss(aa)}
+            VARIANT
+                10 - xx
+            END
+        END        
+    END;
+    
+    
+    oo <-- querytot = oo := SIGMA(zz).(zz: dom(tt) | tt(zz));
+    
+    oo <-- queryreg(nn) = oo := tt(nn);
+    
+    oo <-- querypc(nn) = oo := 100 * tt(nn) / SIGMA(zz).(zz: dom(tt) | tt(zz));
+    
+    oo <-- querymean = oo := SIGMA(zz).(zz: dom(tt) | tt(zz) * zz) / SIGMA(zz).(zz: dom(tt) | tt(zz));
+    
+    oo <-- querymedian = 
+    VAR ii, xx IN
+        IF
+            SIGMA(zz).(zz: dom(tt) | tt(zz)) mod 2 = 1
+        THEN
+            /* middle element */
+            ii := (SIGMA(zz).(zz: dom(tt) | tt(zz)) + 1) / 2
+        ELSE
+            /* lower middle element */
+            ii := SIGMA(zz).(zz: dom(tt) | tt(zz)) / 2
+        END;
+        xx := 0;
+        oo := 0;
+        /* Iterates through the sum of scores and until it is larger than the index we are looking for. We -1 off oo at the end because we increase it too much. */
+        WHILE oo <= 10 & xx < ii
+        DO    
+            xx := ss(oo);
+            oo := oo + 1;
+        INVARIANT
+            oo : 0..11 &
+            xx = ss(oo)
+        VARIANT
+            10 - oo
+        END;
+        oo := oo - 1
+    END
+END

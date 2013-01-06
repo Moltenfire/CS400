@@ -1,0 +1,64 @@
+REFINEMENT
+    Buffer_r(qlen, ELEM)
+    
+REFINES
+    Buffer
+    
+VARIABLES
+    aa, pos, num
+ 
+INVARIANT
+    aa : 1..qlen --> ELEM
+    & pos : NAT1
+    & pos <= qlen
+    & num : NAT
+    & num <= qlen
+ 
+    & num = size(buff)
+    /* Takes the end of the sequence from index pos and concatenates it with the head up to pos. Keeps the first num elements */
+    & (((aa \|/ (pos - 1)) ^ (aa /|\ (pos - 1))) /|\ num) = buff
+    
+INITIALISATION
+    aa :: 1..qlen --> ELEM;
+    pos := 1;
+    num := 0
+ 
+OPERATIONS
+    /* Updates element if there is space */
+    add(xx) = BEGIN
+        IF num > qlen
+        THEN
+            aa := aa <+ {((pos + num - 1) mod qlen) + 1 |-> xx}; /* changed to override*/
+            num := num + 1
+        END
+    END;
+    
+    ee <-- remove = BEGIN
+        IF num > 0
+        THEN
+            ee := aa(pos);
+            num := num - 1;
+            pos := (pos mod qlen) + 1
+        END
+    END;
+    
+    rr <-- emptyquery =
+    IF 
+        num = 0
+    THEN 
+        rr := yes
+    ELSE 
+        rr := no
+    END;
+    
+    rr <-- fullquery =
+    IF 
+        num = qlen
+    THEN 
+        rr := yes
+    ELSE 
+        rr := no
+    END;
+    
+    oo <-- contentsquery = oo := num
+END
