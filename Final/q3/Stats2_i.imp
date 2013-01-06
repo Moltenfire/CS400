@@ -1,0 +1,131 @@
+/*
+Most unproved POs are due to AtelierB thinking that numbers could
+be outside of NAT
+*/
+IMPLEMENTATION
+    Stats2_i
+    
+REFINES
+    Stats2
+    
+/* Use the L_ARRAY1 library machine */
+IMPORTS
+    L_ARRAY1(NAT, 10)
+    
+INVARIANT
+    arr_vrb = tally
+    
+INITIALISATION
+    /* Initialize the counts for each mark to 0 */
+    SET_ARRAY(0, 10, 0)
+    
+OPERATIONS
+    tested(nn) = BEGIN
+        VAR xx IN
+            xx <-- VAL_ARRAY(nn);
+            STR_ARRAY(nn, xx + 1)
+        END
+    END;
+    
+    oo <-- querytot = VAR ii, vv, total IN
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            total := total + vv
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        oo := total
+    END;
+
+    oo <-- queryreg(nn) = oo <-- VAL_ARRAY(nn);
+    
+    oo <-- querypc(nn) = VAR ii, vv, total IN
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            total := total + vv
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        vv <-- VAL_ARRAY(nn);
+        oo := (vv / total) * 100
+    END;
+    
+    oo <-- querymean = VAR ii, vv, count, total IN
+        count := 0;
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            count := count + (ii * vv);
+            total := total + vv
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+            & count = SIGMA(xx).(xx:0..ii | ii * arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        oo := count / total
+    END;
+
+    oo <-- querymedian = VAR total, ii, vv, seen, mm IN
+        /* Find the total number of marks */
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            total := total + vv
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END;
+        
+        /* Determine the middle mark from the total */
+        total := total mod 2;
+        IF total = 1
+        THEN
+            /* middle element */
+            mm := (total + 1) / 2
+        ELSE
+            /* lower middle element */
+            mm := total / 2
+        END;
+
+        /* Loop through the marks to find which 'bucket' contains the middle mark */
+        ii := -1;
+        seen := 0;
+        oo := 0;
+        WHILE ii < 10 & seen < mm DO
+            ii := ii + 1;
+            vv <-- VAL_ARRAY(ii);
+            seen := seen + vv;
+            oo := oo + 1
+        INVARIANT
+            ii : -1..10
+            & seen = SIGMA(xx).(xx:0..ii | arr_vrb(ii))
+        VARIANT 10 - ii
+        END
+    END   
+    
+/*
+queryreg with output printed to screen too.
+The BASIC_IO library must be imported for this to work.
+
+oo <-- queryreg(nn) = BEGIN
+    oo <-- VAL_ARRAY(nn);
+    INT_WRITE(oo)
+END
+*/
+END
