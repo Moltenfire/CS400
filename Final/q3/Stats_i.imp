@@ -1,73 +1,109 @@
+/*
+Most unproved POs are due to AtelierB thinking that numbers could
+be outside of NAT
+*/
 IMPLEMENTATION
     Stats_i
     
 REFINES
     Stats
     
-VALUES
-    total_students = 100
-    
 CONCRETE_VARIABLES
-    tt, ss
+    tt
+    
+INVARIANT
+    tt : 0..10 --> NAT
     
 INITIALISATION
-    tt := 0..10 --> 0..total_students;
-    ss := 0..10 --> 0..total_students;
+    tt := (0..10) * {0}
     
 OPERATIONS
-    tested(nn) = 
-    BEGIN
-        tt := tt <+ {nn |-> tt(nn) + 1};
-        /* Each time a score is added all scores equal and higher get 1 added to them in the function ss. This keeps a running sum of the total number of scores. */
-        VAR xx, yy IN
-            xx := nn;
-            yy := ss;
-            WHILE xx < 10
-            DO
-                yy := yy <+ {xx |-> ss(xx) + 1};
-                xx := xx + 1;
-            INVARIANT
-                xx : 0..10 &
-                yy = {aa, bb| aa:0..nn-1 & bb = ss(aa)} \/ {aa, bb| aa:nn..xx & bb = ss(aa)} \/ {aa, bb| aa:xx+1..10 & bb = ss(aa)}
-            VARIANT
-                10 - xx
-            END
-        END        
+    tested(nn) = tt(nn) := tt(nn) + 1;
+
+    oo <-- querytot =
+    VAR ii, total IN
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            total := total + tt(ii)
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | tt(ii))
+        VARIANT 10 - ii
+        END;
+        oo := total
     END;
-    
-    
-    oo <-- querytot = oo := SIGMA(zz).(zz: dom(tt) | tt(zz));
     
     oo <-- queryreg(nn) = oo := tt(nn);
     
-    oo <-- querypc(nn) = oo := 100 * tt(nn) / SIGMA(zz).(zz: dom(tt) | tt(zz));
+    oo <-- querypc(nn) = VAR ii, total IN
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            total := total + tt(ii)
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | tt(ii))
+        VARIANT 10 - ii
+        END;
+        oo := (tt(nn) / total) * 100
+    END;
+
+    oo <-- querymean = VAR ii, count, total IN
+        count := 0;
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            count := count + (ii * tt(ii));
+            total := total + tt(ii)
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | tt(ii))
+            & count = SIGMA(xx).(xx:0..ii | ii * tt(ii))
+        VARIANT 10 - ii
+        END;
+        oo := count / total
+    END;
     
-    oo <-- querymean = oo := SIGMA(zz).(zz: dom(tt) | tt(zz) * zz) / SIGMA(zz).(zz: dom(tt) | tt(zz));
-    
-    oo <-- querymedian = 
-    VAR ii, xx IN
-        IF
-            SIGMA(zz).(zz: dom(tt) | tt(zz)) mod 2 = 1
+    oo <-- querymedian = VAR total, ii, seen, mm IN
+        /* Find the total number of marks */
+        total := 0;
+        ii := -1;
+        WHILE ii < 10 DO
+            ii := ii + 1;
+            total := total + tt(ii)
+        INVARIANT
+            ii : -1..10
+            & total = SIGMA(xx).(xx:0..ii | tt(ii))
+        VARIANT 10 - ii
+        END;
+        
+        /* Determine the middle mark from the total */
+        total := total mod 2;
+        IF total = 1
         THEN
             /* middle element */
-            ii := (SIGMA(zz).(zz: dom(tt) | tt(zz)) + 1) / 2
+            mm := (total + 1) / 2
         ELSE
             /* lower middle element */
-            ii := SIGMA(zz).(zz: dom(tt) | tt(zz)) / 2
+            mm := total / 2
         END;
-        xx := 0;
+        
+        /* Loop through the marks to find which 'bucket' contains the middle mark */
+        ii := -1;
+        seen := 0;
         oo := 0;
-        /* Iterates through the sum of scores and until it is larger than the index we are looking for. We -1 off oo at the end because we increase it too much. */
-        WHILE oo <= 10 & xx < ii
-        DO    
-            xx := ss(oo);
-            oo := oo + 1;
+        WHILE ii < 10 & seen < mm DO
+            ii := ii + 1;
+            seen := seen + tt(ii);
+            oo := oo + 1
         INVARIANT
-            oo : 0..11 &
-            xx = ss(oo)
-        VARIANT
-            10 - oo
-        END;
-        oo := oo - 1
+            ii : -1..10
+            & seen = SIGMA(xx).(xx:0..ii | tt(ii))
+        VARIANT 10 - ii
+        END
     END
 END

@@ -15,7 +15,9 @@ OPERATIONS
     tested(nn) =
     PRE
         nn: NAT &
-        nn <= 10
+        nn <= 10 &
+        /* Ensure that elements of ran(tally) are always in NAT */
+        (tally(nn) + 1) : NAT
     THEN
         /* Adds one to the score */
         tally := tally <+ {nn |-> tally(nn) + 1}
